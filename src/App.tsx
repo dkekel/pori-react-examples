@@ -1,34 +1,56 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import Counter from './components/Counter'
+import UserProfile from './components/UserProfile'
+import ThemeProvider from './context/ThemeContext'
+import ThemeToggler from './components/ThemeToggler'
+import DataFetcher from './components/DataFetcher'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [user, setUser] = useState({
+    name: 'Mickey Mouse',
+    role: 'Student',
+    avatar: 'https://robohash.org/Mickey?size=100x100'
+  })
+
+  const changeUser = () => {
+    const newUser = {
+      name: user.name === 'Mickey Mouse' ? 'Ruben Strong' : 'Mickey Mouse',
+      avatar: user.name === 'Mickey Mouse' ?
+          'https://robohash.org/Ruben?size=100x100'
+          : 'https://robohash.org/Mickey?size=100x100',
+      role: user.role === 'Student' ? 'Teacher' : 'Student'
+    };
+    setUser(newUser);
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+      <ThemeProvider>
+        <div className="app-container">
+          <h1>React Features Demo</h1>
+
+          <section className="demo-section">
+            <h2>1. useState Hook Demo</h2>
+            <Counter initialCount={0} />
+          </section>
+
+          <section className="demo-section">
+            <h2>2. Props & Component Composition</h2>
+            <UserProfile user={user} />
+            <button onClick={changeUser}>Switch User</button>
+          </section>
+
+          <section className="demo-section">
+            <h2>3. Context API & Theme Toggling</h2>
+            <ThemeToggler />
+          </section>
+
+          <section className="demo-section">
+            <h2>4. useEffect & Data Fetching</h2>
+            <DataFetcher />
+          </section>
+        </div>
+      </ThemeProvider>
   )
 }
 
